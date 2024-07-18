@@ -15,21 +15,26 @@ You can use as much or as little of the data as you like: you don't have to incl
 
 
 ## What we need to create
-Your code (most likely in R)\
-A text file (called a README file) with step bystep instructions for how to run the code\
-The cleaned-up CSV file your code runs with\
-Make sure your instructions are clear andreproducible!\
- Other teams should be able to recreate your graphic using your instructions in 5 minutes
+Code FIle (most likely in R)\
+Text file (called a README file) with step bystep instructions for how to run the code\
+Cleaned-up CSV file your code runs with\
+Clear and reproducible instructions in Markdown\
+Other teams should be able to recreate your graphic using your instructions in 5 minutes
 
 
-
-## Role Delegation
+### Role Delegation
 
 Cleaning Data: __________ \
 Coding: ___________ \
 README File: __________ \
 Graphic: _____________
 
-# Instructions 
+
+## Interpretation method
+i.e. Wordcloud 
+
+## Instructions 
+
+Packages we used: Library("tidyverse")
 
 
