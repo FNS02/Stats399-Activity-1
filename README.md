@@ -27,7 +27,7 @@ Other teams should be able to recreate your graphic using your instructions in 5
 Cleaning Data: __________ \
 Coding: ___________ \
 README File: __________ \
-Graphic: _____________
+Graphic + Grahpic interpretation: _____________
 
 
 ## Interpretation method
