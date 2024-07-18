@@ -16,8 +16,8 @@ You can use as much or as little of the data as you like: you don't have to incl
 
 
 ## What we need to submit
-Code FIle (most likely in R)\
-Text file (called a README file) with step bystep instructions for how to run the code\
+Code FIle (R Code)\
+Text file (README file) with step bystep instructions for how to run the code\
 Cleaned-up CSV file your code runs with\
 Clear and reproducible instructions in Markdown\
 Other teams should be able to recreate your graphic using your instructions in 5 minutes
