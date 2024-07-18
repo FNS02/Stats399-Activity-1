@@ -1,7 +1,10 @@
 ---
 title: "399 Activity 1"
-author: "dhua227"
+author: "name1,name2,name3,name4"
 date: "2024-07-18"
 output: html_document
 ---
 
+library()
+
+sentiment.data <- read.csv(sentiment-survey-data.csv)
