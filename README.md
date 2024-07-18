@@ -14,6 +14,14 @@ You should spend a total of 6 to 7 hours outside of class on this activity. You 
 You can use as much or as little of the data as you like: you don't have to include everything in your graphic.
 
 
+## What we need to create
+Your code (most likely in R)\
+A text file (called a README file) with step bystep instructions for how to run the code\
+The cleaned-up CSV file your code runs with\
+Make sure your instructions are clear andreproducible!\
+ Other teams should be able to recreate your graphic using your instructions in 5 minutes
+
+
 
 ## Role Delegation
 
@@ -23,3 +31,5 @@ README File: __________ \
 Graphic: _____________
 
 # Instructions 
+
+
