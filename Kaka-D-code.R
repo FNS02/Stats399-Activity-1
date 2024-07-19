@@ -1,4 +1,6 @@
 library(tidyverse)
+library(wordcloud2)
+
 
 data <- read_csv("sentiment-survey-data.csv")
 names(data) <- c("four_words", "majority", "instructor")
@@ -32,8 +34,10 @@ data <- data %>% filter(!str_count(majority, "\\S+") > 1) %>%
 data["instructor"] <- lapply(data["instructor"], function(word) clean_col(word))
 data <- data %>% filter(!str_count(instructor, "\\S+") > 1) %>%
   filter(!nchar(majority) == 0)
-
-# Take out repeated words
+                             
+# Take out repeated words 
+####### To take out repeated words you can also use the distinct() function in R.
+                             
 used_words <- data$four_words[1]
 repeated <- FALSE
 for (i in 2:length(data$four_words)) {
@@ -70,3 +74,25 @@ non_repeated_words <- non_repeated_words %>% rename(finstructor_sentiment = 7)
 
 #Take out the repeated_words col
 non_repeated_words <- non_repeated_words[1:7] 
+
+
+
+
+                             
+###################################################################################
+# Code works but is just in the wrong spot at the moment.
+                             
+# Create a column that counts the frequency of words in the four_words column
+data <- data %>% 
+  group_by(four_words) %>%
+  mutate(frequency = n()) %>%
+  ungroup()
+
+# Select columns for the wordcloud
+wordcloud_data <- data %>% 
+  select(four_words, frequency) %>% 
+  distinct()
+
+# Generate the wordcloud
+wordcloud2(wordcloud_data, size = 2, color = "random-light", backgroundColor = "grey")
+###################################################################################
