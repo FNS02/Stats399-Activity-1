@@ -25,10 +25,13 @@ Other teams should be able to recreate your graphic using your instructions in 5
 
 ### Role Delegation
 
-Cleaning Data: __________ \
-Coding: ___________ \
-README File: __________ \
-Graphic + Graphic Interpretation: _____________
+Coding: Derek
+
+Cleaning the data and interpretation: Lingyu & Mike
+
+ReadME: Dominic, Mike
+
+Graphics: Derek, Dominic
 
 
 ## Interpretation method
