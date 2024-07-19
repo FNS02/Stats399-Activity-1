@@ -37,8 +37,12 @@ Graphics: Derek, Dominic
 ## Interpretation method
 i.e. Wordcloud 
 
-## Instructions 
+# Instructions 
+Packages we used: library("tidyverse"), library("")
 
-Packages we used: Library("tidyverse")
+## Data Cleaning 
+
+
+
 
 
