@@ -1,10 +1,11 @@
 library(tidyverse)
 library(wordcloud2)
 
-
 data <- read_csv("sentiment-survey-data.csv")
 names(data) <- c("four_words", "majority", "instructor")
 data <- data %>% mutate(id = row_number())
+
+
 
 # separate the 4 words
 data <- data %>% separate_rows(four_words, sep = " , ") %>%
@@ -25,6 +26,12 @@ data["four_words"] <- lapply(data["four_words"], function(word) clean_col(word))
 data <- data %>% filter(!str_count(four_words, "\\S+") > 1) %>%
   filter(!nchar(four_words) == 0)
 
+# Create a column that counts the frequency of words in the four_words column
+data <- data %>% 
+  group_by(four_words) %>%
+  mutate(frequency = n()) %>%
+  ungroup()
+
 # clean the second row
 data["majority"] <- lapply(data["majority"], function(word) clean_col(word))
 data <- data %>% filter(!str_count(majority, "\\S+") > 1) %>%
@@ -34,10 +41,8 @@ data <- data %>% filter(!str_count(majority, "\\S+") > 1) %>%
 data["instructor"] <- lapply(data["instructor"], function(word) clean_col(word))
 data <- data %>% filter(!str_count(instructor, "\\S+") > 1) %>%
   filter(!nchar(majority) == 0)
-                             
-# Take out repeated words 
-####### To take out repeated words you can also use the distinct() function in R.
-                             
+
+# Take out repeated words
 used_words <- data$four_words[1]
 repeated <- FALSE
 for (i in 2:length(data$four_words)) {
@@ -56,43 +61,34 @@ sentiment_list <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vR6j
 
 #Put id col in front
 non_repeated_words <- non_repeated_words %>% relocate(id) 
+non_repeated_words <- non_repeated_words %>% relocate(frequency, .after = four_words)
 
 # Join four_words with sentiment list
 non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("four_words" = "word"))
 non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = four_words)
 non_repeated_words <- non_repeated_words %>% rename(four_word_sentiment = 3)
 
+# Pick four_words, sentiment, and frequency for plotting
+four_words_data <- non_repeated_words %>% select(four_words, four_word_sentiment, frequency)
+
 # Join majority with sentiment list
 non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("majority" = "word")) #Join majority
 non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = majority)
-non_repeated_words <- non_repeated_words %>% rename(majority_sentiment = 5)
+non_repeated_words <- non_repeated_words %>% rename(majority_sentiment = 6)
 
 # Join instructor with sentiment list
 non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("instructor" = "word")) #Join instructor
 non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = instructor)
-non_repeated_words <- non_repeated_words %>% rename(finstructor_sentiment = 7)
+non_repeated_words <- non_repeated_words %>% rename(finstructor_sentiment = 8)
 
 #Take out the repeated_words col
-non_repeated_words <- non_repeated_words[1:7] 
-
-
+non_repeated_words <- non_repeated_words[1:8] 
+non_repeated_words <- non_repeated_words %>% arrange(desc(frequency))
 
 
                              
-###################################################################################
-# Code works but is just in the wrong spot at the moment.
-                             
-# Create a column that counts the frequency of words in the four_words column
-data <- data %>% 
-  group_by(four_words) %>%
-  mutate(frequency = n()) %>%
-  ungroup()
-
-# Select columns for the wordcloud
-wordcloud_data <- data %>% 
-  select(four_words, frequency) %>% 
-  distinct()
-
-# Generate the wordcloud
-wordcloud2(wordcloud_data, size = 2, color = "random-light", backgroundColor = "grey")
-###################################################################################
+# The plotting part
+# Not sure how this works but there is an error 
+  # Error in size * 180/max(dataOut$freq) : 
+  #   non-numeric argument to binary operator
+wordcloud2(four_words_data, size = 2, color = "random-light", backgroundColor = "grey")
