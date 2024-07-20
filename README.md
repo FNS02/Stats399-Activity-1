@@ -38,7 +38,7 @@ Graphics: Derek, Dominic
 i.e. Wordcloud 
 
 # Instructions 
-Packages we used: library("tidyverse"), library("")
+Packages we used: library("tidyverse"), library("wordcloud2")
 
 ## Data Cleaning 
 
