@@ -67,9 +67,7 @@ non_repeated_words <- non_repeated_words %>% relocate(frequency, .after = four_w
 non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("four_words" = "word"))
 non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = four_words)
 non_repeated_words <- non_repeated_words %>% rename(four_word_sentiment = 3)
-
-# Pick four_words, sentiment, and frequency for plotting
-four_words_data <- non_repeated_words %>% select(four_words, four_word_sentiment, frequency)
+four_words_data <- non_repeated_words %>% select(four_words, frequency, four_word_sentiment) %>% arrange(desc(frequency))
 
 # Join majority with sentiment list
 non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("majority" = "word")) #Join majority
@@ -85,10 +83,5 @@ non_repeated_words <- non_repeated_words %>% rename(finstructor_sentiment = 8)
 non_repeated_words <- non_repeated_words[1:8] 
 non_repeated_words <- non_repeated_words %>% arrange(desc(frequency))
 
-
-                             
-# The plotting part
-# Not sure how this works but there is an error 
-  # Error in size * 180/max(dataOut$freq) : 
-  #   non-numeric argument to binary operator
+# Plot the graph with the four_words_data solely
 wordcloud2(four_words_data, size = 2, color = "random-light", backgroundColor = "grey")
