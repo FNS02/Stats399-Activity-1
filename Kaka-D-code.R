@@ -85,3 +85,31 @@ non_repeated_words <- non_repeated_words %>% arrange(desc(frequency))
 
 # Plot the graph with the four_words_data solely
 wordcloud2(four_words_data, size = 2, color = "random-light", backgroundColor = "grey")
+
+
+
+
+#################################################################################
+# Apply logarithmic transformation to frequencies
+wordcloud_data <- four_words_data %>% 
+  mutate(log_freq = log1p(frequency))
+
+# Log transforms the frequencies
+wordcloud_data1 <- wordcloud_data %>% 
+  select(four_words, log_frequency, four_word_sentiment)
+
+
+# Create a data frame for the word cloud with the required format
+wordcloud_data2 <- wordcloud_data1 %>% select(four_words, log_frequency)
+
+
+# Generate the word cloud
+wordcloud2(wordcloud_data_list, size = 0.5, color = 'random-light', backgroundColor = "maroon", shape = 'circle')
+#################################################################################
+
+
+
+
+
+
+
