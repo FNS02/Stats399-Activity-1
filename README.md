@@ -34,15 +34,213 @@ ReadME: Dominic, Mike
 Graphics: Derek, Dominic
 
 
-## Interpretation method
-i.e. Wordcloud 
+# Instructions
 
-# Instructions 
-Packages we used: library("tidyverse"), library("wordcloud2")
+Follow the detailed steps below to clean and analyze sentiment survey data using R. The instructions will guide you through loading libraries, reading data, cleaning columns, and visualizing the data using a word cloud and ggplot.
 
-## Data Cleaning 
+### 1. Load Necessary Libraries
+
+Load the required libraries for data manipulation and visualization. The `tidyverse` library is essential for data manipulation, `ggplot2` is library for creating data visualisation, and `ggwordcloud` is a third-party library that can be used to  create word clouds with ggplot,
+
+```r
+library(tidyverse)
+library(ggwordcloud)
+library(ggplot2)
+```
+`ggwordcloud` may provide a warning message when loaded. This warning can be ignored.
+
+### 2. Read and Preprocess the Data
+
+Read the CSV file containing the sentiment survey data. Assign appropriate column names to the dataset for clarity and create an `id` column to uniquely identify each row.
+
+```r
+data <- read_csv("sentiment-survey-data.csv")
+names(data) <- c("four_words", "majority", "instructor")
+data <- data %>% mutate(id = row_number())
+```
+
+### 3. Separate and Clean the `four_words` Column
+
+Separate the words in the `four_words` column so each word is in a separate row.
+
+```r
+data <- data %>% 
+  separate_rows(four_words, sep = " , ") %>%
+  separate_rows(four_words, sep = ", ") %>%
+  separate_rows(four_words, sep = ",") %>%
+  separate_rows(four_words, sep = "，")
+```
+
+Create a function to convert the words to lowercase and remove words with punctuation and numbers. Apply this function to the `four_words` column.
+
+```r
+clean_col <- function(word) {
+  str_to_lower(word) %>%
+    str_remove_all("[[:punct:]]") %>%
+    str_remove_all("[[:digit:]]")
+}
+
+data["four_words"] <- lapply(data["four_words"], function(word) clean_col(word))
+```
+
+Filter the rows in the `four_words` column that have more than one word or have any digits. This will result in the `four_words` column  only containing single words.
+
+```r
+data <- data %>% filter(!str_count(four_words, "\\S+") > 1) %>%
+  filter(!nchar(four_words) == 0)
+```
+
+### 4. Count Word Frequency
+
+Create a new column that counts the frequency of each word in the "four_words` column.
+
+```r
+data <- data %>% 
+  group_by(four_words) %>%
+  mutate(frequency = n()) %>%
+  ungroup()
+```
+
+### 5. Clean the `majority` and `instructor` Columns
+
+Using the same `function(word)`, clean the `majority` and `instructor` columns to filter out rows with more than one word, have any digits, or are empty.
+
+```r
+data["majority"] <- lapply(data["majority"], function(word) clean_col(word))
+data <- data %>% filter(!str_count(majority, "\\S+") > 1) %>%
+  filter(!nchar(majority) == 0)
+
+data["instructor"] <- lapply(data["instructor"], function(word) clean_col(word))
+data <- data %>% filter(!str_count(instructor, "\\S+") > 1) %>%
+  filter(!nchar(majority) == 0)
+```
+
+### 6. Remove Repeated Words
+
+Identify and remove repeated words in the `four_words` column. This leaves a column with unique words in every row.
+
+```r
+used_words <- data$four_words[1]
+repeated <- FALSE
+for (i in 2:length(data$four_words)) {
+  if(data$four_words[i] %in% used_words) {
+    repeated <- c(repeated, TRUE)} 
+  else {
+    repeated <- c(repeated, FALSE)
+    used_words <- c(used_words, data$four_words[i])
+  }
+}
+data$repeated_word <- repeated
+non_repeated_words <- data %>% filter(!repeated_word)
+```
+
+### 7. Read the Sentiment List
+
+Read the sentiment list from the provided Google Sheets. This list contains words and their associated sentiments, which will be used to analyse the sentiment of the words from Stats399 Students
+
+```r
+sentiment_list <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vR6jVuO3F3DNwX1WApTvCfYqfjehcNKHmuDqupk2_0vJe0lnf81dmUlsXZGkZKmaCeallS5Dqch05ks/pub?gid=422750759&single=true&output=csv")
+```
+
+### 8. Reorganize Columns
+
+Relocate the `id` to appear in the first column of the data frame. Move the `frequency` columns to appear after our cleaned wordlist. Both these steps help with improving the readability of the data.
+
+```r
+non_repeated_words <- non_repeated_words %>% relocate(id) 
+non_repeated_words <- non_repeated_words %>% relocate(frequency, .after = four_words)
+```
+
+### 9. Join with Sentiment List
+
+Add sentiment information to the dataset by comparing the words from the sentiment list on Google Sheets to the cleaned data. Using inner_join() we can match the words in our lits to the Google Sheets. 
+
+If a word from our survey data list does not match any words from the Google Sheets sentiment list, it will not be included in the final sentiment output. After matching, the sentiment analysis results are repositioned to follow the appropriate columns and the sentiment columns are renamed for clarity.
+
+```r
+non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("four_words" = "word"))
+non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = four_words)
+non_repeated_words <- non_repeated_words %>% rename(four_word_sentiment = 3)
+
+non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("majority" = "word"))
+non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = majority)
+non_repeated_words <- non_repeated_words %>% rename(majority_sentiment = 6)
+
+non_repeated_words <- inner_join(non_repeated_words, sentiment_list, by = c("instructor" = "word"))
+non_repeated_words <- non_repeated_words %>% relocate(sentiment, .after = instructor)
+non_repeated_words <- non_repeated_words %>% rename(instructor_sentiment = 8)
+```
+
+### 10. Remove Repeated Words Column
+
+Remove the `repeated_word` column and arrange the data by frequency to first analyse the most frequent words.
+
+```r
+non_repeated_words <- non_repeated_words[1:8] 
+non_repeated_words <- non_repeated_words %>% arrange(desc(frequency))
+```
+
+### 11. Apply Logarithmic Transformation to Frequencies
+#### We could probably remove this if we went with the ggplot2 version. 
+Apply a logarithmic transformation to the frequencies of the words to help build a better visualisation of the data.
+
+```r
+wordcloud_data <- four_words_data %>% 
+  mutate(log_freq = log1p(frequency))
+```
+
+### 12. Select Necessary Columns for Word Cloud
+
+Create a data frame with the columns `four_words`, `frequency` and `four_word_sentiment` to build the word cloud.
+
+```r
+wordcloud_data <- wordcloud_data %>% 
+  select(four_words, frequency, four_word_sentiment)
+```
+
+### 13. Generate the Word Cloud using the wordcloud2
+
+Create a word cloud to visualize the words based on frequency.
+```r
+wordcloud2(wordcloud_data, size = 0.5, color = 'random-light', backgroundColor = "maroon", shape = 'circle')
+```
+
+### 13. Create a Word Cloud Using ggplot2
+
+Generate a word cloud using ggplot to visualize the words based on frequency and sentiment.
+
+```r
+ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_word_sentiment,
+                           fontface = "bold")) +
+  geom_text_wordcloud(shape = "square", show.legend = TRUE) +
+  scale_size_area(max_size = 50) +
+  scale_color_manual(values = c("positive" = "chartreuse2", "negative" = "red"),
+                     labels = c("positive", "negative"), 
+                     name = "Sentiment Among Students") +
+  labs(title = "Sentiment Word Cloud",
+       subtitle = "A visualization of the sentiment of respondents to four-word phrases",
+       caption = "Data source: Stats399 Students") +
+  theme(
+    panel.background = element_rect(fill = 'aliceblue'),
+    plot.background = element_rect(fill = "aliceblue"),
+    panel.border = element_rect(colour = "darkgrey", fill=NA, size = 3),
+    legend.background = element_rect(fill= "aliceblue"),
+    legend.key = element_rect(fill = "white"),
+    plot.title = element_text(size = 24, face = "bold"),
+    plot.subtitle = element_text(size = 14),
+    plot.caption = element_text(size = 12),
+    legend.position = c(0.5, 0.075)
+  ) +
+  guides(size = "none",
+         color = guide_legend(nrow = 1))
+```
+
+
+## Image
+![alt text](https://github.com/FNS02/Stats399-Activity-1/blob/main/Sentiment%20Word%20Cloud%20v1.1.png)
+
+### Image Interpretation
 
 
 
-
-
+## Report Summary 
