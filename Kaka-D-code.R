@@ -1,5 +1,8 @@
 library(tidyverse)
+install.packages(ggwordcloud)
+install.packages(wordcloud2)
 library(wordcloud2)
+library(ggwordcloud)
 
 data <- read_csv("sentiment-survey-data.csv")
 names(data) <- c("four_words", "majority", "instructor")
