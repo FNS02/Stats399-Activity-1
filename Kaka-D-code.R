@@ -102,6 +102,35 @@ wordcloud_data <- wordcloud_data %>%
 wordcloud2(wordcloud_data, size = 0.5, color = 'random-light', backgroundColor = "maroon", shape = 'circle')
 #################################################################################
 
+# ggplot version of the word cloud with different colours for negative/positive
+## Edit the theme and code if you want something different, I don't mind. 
+### Also feels like we need another graph to supplement this lol.
+
+ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_word_sentiment,
+                           fontface = "bold")) +
+  geom_text_wordcloud(shape = "square", show.legend = TRUE) +
+  scale_size_area(max_size = 30)+
+  scale_color_manual(values = c("positive" = "chartreuse2", "negative" = "red"),
+    labels = c("positive", "Negative"), 
+    name = "Sentiment Among Students") +
+  labs(title = "Sentiment Word Cloud",
+    subtitle = "A visualisation of the sentiment of respondents to four-word phrases ",
+    caption = "Data source: Stats399 Students") +
+  theme(
+    panel.background = element_rect(fill = 'aliceblue'),
+    plot.background = element_rect(fill = "aliceblue"),
+    panel.border = element_rect(colour = "white", fill=NA, size = 3),
+    legend.background = element_rect( fill= "aliceblue"),
+    legend.key = element_rect(fill = "white"),
+    plot.title = element_text(size = 24, face = "bold"),
+    plot.subtitle = element_text(size = 14),
+    plot.caption = element_text(size = 12),
+    legend.position = c(0.5, 0.1)
+    
+  ) +
+  guides(size = "none",
+         color = guide_legend(nrow = 1))
+
 
 
 
