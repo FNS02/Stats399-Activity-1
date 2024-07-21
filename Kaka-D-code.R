@@ -1,6 +1,6 @@
 library(tidyverse)
-install.packages(ggwordcloud)
-install.packages(wordcloud2)
+install.packages("ggwordcloud")
+install.packages("wordcloud2")
 library(wordcloud2)
 library(ggwordcloud)
 
