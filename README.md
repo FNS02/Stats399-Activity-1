@@ -51,11 +51,9 @@ Graphics: Derek, Dominic
 
 # Instructions
 
-Follow the detailed steps below to clean and analyze sentiment survey data using R. The instructions will guide you through loading libraries, reading data, cleaning columns, and visualizing the data using a word cloud and ggplot.
-
 ### 1. Load Necessary Libraries
 
-Load the required libraries for data manipulation and visualization. The `tidyverse` library is essential for data manipulation, `ggplot2` is library for creating data visualisation, and `ggwordcloud` is a third-party library that can be used to  create word clouds with ggplot,
+Load the required libraries for data manipulation and visualization. The `tidyverse` library is essential for data manipulation, `ggplot2` is library for creating data visualisation, and `ggwordcloud` is a third-party library that can be used to create word clouds with ggplot,
 
 ```r
 library(tidyverse)
@@ -66,7 +64,7 @@ Note:`ggwordcloud` may provide a warning message when loaded. This warning can b
 
 ### 2. Read and Preprocess the Data
 
-Read the CSV file containing the sentiment survey data. Assign appropriate column names to the dataset for clarity and create an `id` column to uniquely identify each row.
+Read and create a dataframe for the CSV file containing the sentiment survey data. Assign appropriate column names to the dataset for clarity and create an `id` column to give each row a unique number.
 
 ```r
 data <- read_csv("sentiment-survey-data.csv")
