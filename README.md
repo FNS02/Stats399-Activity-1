@@ -62,7 +62,7 @@ library(tidyverse)
 library(ggwordcloud)
 library(ggplot2)
 ```
-`ggwordcloud` may provide a warning message when loaded. This warning can be ignored.
+Note:`ggwordcloud` may provide a warning message when loaded. This warning can be ignored.
 
 ### 2. Read and Preprocess the Data
 
