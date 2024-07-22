@@ -32,10 +32,8 @@ join_sentiment <- function(data, column, sentiment_list) {
     rename_with(~ paste0(column, "_sentiment"), sentiment)
 }
 
-# Apply separate_and_clean to four_words, majority, and instructor
+# Apply separate_and_clean to four_words
 data <- separate_and_clean(data, four_words)
-data <- separate_and_clean(data, majority)
-data <- separate_and_clean(data, instructor)
 
 # Count frequency of words in four_words
 data <- data %>%
@@ -63,7 +61,6 @@ wordcloud_data <- read_csv("cleaned_sentiment_data.csv") %>%
 
 
 # ggplot version of the word cloud with different colours for negative/positive
-
 ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_words_sentiment,
                            fontface = "bold")) +
   geom_text_wordcloud(shape = "square", show.legend = TRUE) +
