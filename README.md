@@ -75,7 +75,7 @@ data <- data %>% mutate(id = row_number())
 ```
 
 
-#### 3. Create Functions to Clean Data
+### 3. Create Functions to Clean Data
 
 Create a function to convert all words to lowercase and remove words with punctuation and numbers. 
 
@@ -109,7 +109,7 @@ join_sentiment <- function(data, column, sentiment_list) {
 }
 ```
 
-#### 4. Clean the `four_words` Column
+### 4. Clean the `four_words` Column
 
 Apply the `separate_and_clean` function to the `four_words` column.
 
@@ -117,7 +117,7 @@ Apply the `separate_and_clean` function to the `four_words` column.
 data <- separate_and_clean(data, four_words)
 ```
 
-#### 5. Count Word Frequency
+### 5. Count Word Frequency
 
 Count the frequency of words in the `four_words` column. Afterwards remove any duplicates words leaving only unique words in the `four_words` column.
 
@@ -138,7 +138,7 @@ Read the sentiment list from the provided Google Sheets. This list contains word
 sentiment_list <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vR6jVuO3F3DNwX1WApTvCfYqfjehcNKHmuDqupk2_0vJe0lnf81dmUlsXZGkZKmaCeallS5Dqch05ks/pub?gid=422750759&single=true&output=csv")
 ```
 
-#### 7. Join with Sentiment List
+### 7. Join with Sentiment List
 
 Use the previously created `join_sentiment` function on the `four_words` column to add sentiment information for each word.
 
@@ -146,7 +146,7 @@ Use the previously created `join_sentiment` function on the `four_words` column 
 data <- join_sentiment(data, "four_words", sentiment_list)
 ```
 
-#### 8. Export the Cleaned Data
+### 8. Export the Cleaned Data
 
 Export the cleaned data with sentiment information to a new CSV file.
 
@@ -154,7 +154,7 @@ Export the cleaned data with sentiment information to a new CSV file.
 write_csv(data, "cleaned_sentiment_data.csv")
 ```
 
-#### 9. Select Data for Word Cloud
+### 9. Select Data for Word Cloud
 
 Read the saved cleaned sentiment data CSV and select the `four_words`, `frequency` and `four_word_sentiment` to build the word cloud.
 
@@ -163,7 +163,7 @@ wordcloud_data <- read_csv("cleaned_sentiment_data.csv") %>%
   select(four_words, frequency, four_words_sentiment)
 ```
 
-#### 10. Create Word Cloud Using `ggplot2`
+### 10. Create Word Cloud Using `ggplot2`
 
 Create a word cloud using `ggplot2` and `ggwordcloud` with different colors for positive and negative sentiments .
 
@@ -195,7 +195,7 @@ ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_wo
 **Note**: Depending on the resolution of the screen being used, you may see an multiple warning messages regarding the size of the plot. These can be safely ignored as they have no effect on the final output detailed in Step 11. 
 
 
-#### 11. Save the Plot
+### 11. Save the Plot
 
 Export the plot. This plot will save in the location of the working directory. The exported image may appear differently to the preview given in Step 10, which is expected.
 
