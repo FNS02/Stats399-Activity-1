@@ -1,8 +1,6 @@
 library(tidyverse)
 # Use the following install call only if you haven't installed these packages
 ## install.packages("ggwordcloud")
-## install.packages("wordcloud2")
-library(wordcloud2)
 library(ggwordcloud)
 
 # Read and prepare data
