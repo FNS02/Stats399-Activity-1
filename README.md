@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  Stats399: Activity 1
+  <b>Stats399: Activity 1</b>
   <br>
 </h1>
 
@@ -15,6 +15,7 @@
   <a href="#Report-Summary">Report Summary</a>
 </p>
 
+<body style="background-color:#F0F8FF;">
 
 
 
@@ -204,7 +205,7 @@ ggsave("sentiment_wordcloud.png", plot = last_plot(), width = 15, height = 10, d
 
 
 ## Image
-![A analysis of Stats399 students sentiment for the course](https://github.com/FNS02/Stats399-Activity-1/blob/main/Sentiment%20Word%20Cloud%20v1.1.png)
+![](https://raw.githubusercontent.com/FNS02/Stats399-Activity-1/master/Sentiment Word Cloud v1.1.png)
 
 ### Image Interpretation
 
