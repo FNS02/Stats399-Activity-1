@@ -60,7 +60,7 @@ ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_wo
   geom_text_wordcloud(shape = "square", show.legend = TRUE) +
   scale_size_area(max_size = 60)+
   scale_color_manual(values = c("positive" = "chartreuse2", "negative" = "red"),
-                     labels = c("positive", "Negative"), 
+                     labels = c("Negative", "Positive"), 
                      name = "Sentiment Among Students") +
   labs(title = "Sentiment Word Cloud",
        subtitle = "A proportional visualization of respondents sentiment about the Stats 399 course based on four descriptive words",
