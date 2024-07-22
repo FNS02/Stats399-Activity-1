@@ -209,6 +209,6 @@ ggsave("sentiment_wordcloud.png", plot = last_plot(), width = 15, height = 10, d
 
 ### Image Interpretation
 
-
+This word cloud provides a comprehensive overview of the emotional landscape of students in relation to their Stats 399 course, where red represents negative emotions and green represents positive emotions.The image illustrates a mixed emotional landscape among students, with both excitement and nervousness being prominent. This duality may reflect the challenging yet rewarding nature of the course.
 
 ## Report Summary 
