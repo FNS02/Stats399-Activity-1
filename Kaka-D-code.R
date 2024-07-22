@@ -70,7 +70,7 @@ ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_wo
   theme(
     panel.background = element_rect(fill = 'aliceblue'),
     plot.background = element_rect(fill = "aliceblue"),
-    panel.border = element_rect(colour = "white", fill=NA, size = 3),
+    panel.border = element_rect(colour = "grey", fill=NA, size = 3),
     legend.background = element_rect( fill= "aliceblue"),
     legend.key = element_rect(fill = "white"),
     plot.title = element_text(size = 24, face = "bold"),
