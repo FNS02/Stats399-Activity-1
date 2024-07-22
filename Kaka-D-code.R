@@ -42,10 +42,6 @@ data <- data %>%
   ungroup() %>%
   distinct(four_words, .keep_all = TRUE)
 
-# Remove repeated words
-data <- data %>%
-  filter(!duplicated(four_words))
-
 # Read the sentiment list
 sentiment_list <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vR6jVuO3F3DNwX1WApTvCfYqfjehcNKHmuDqupk2_0vJe0lnf81dmUlsXZGkZKmaCeallS5Dqch05ks/pub?gid=422750759&single=true&output=csv")
 
