@@ -69,7 +69,7 @@ ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_wo
                      labels = c("positive", "Negative"), 
                      name = "Sentiment Among Students") +
   labs(title = "Sentiment Word Cloud",
-       subtitle = "A visualisation of the sentiment of respondents to four-word phrases ",
+       subtitle = "A proportional visualization of respondents sentiment about the Stats 399 course based on four descriptive words",
        caption = "Data source: Stats399 Students") +
   theme(
     panel.background = element_rect(fill = 'aliceblue'),
