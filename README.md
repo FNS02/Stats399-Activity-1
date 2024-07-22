@@ -205,7 +205,7 @@ ggsave("sentiment_wordcloud.png", plot = last_plot(), width = 15, height = 10, d
 
 
 ## Image
-![](https://raw.githubusercontent.com/FNS02/Stats399-Activity-1/master/Sentiment Word Cloud v1.1.png)
+![](https://raw.githubusercontent.com/FNS02/Stats399-Activity-1/main/Sentiment-Word-Cloud-v1.1.png)
 
 ### Image Interpretation
 
