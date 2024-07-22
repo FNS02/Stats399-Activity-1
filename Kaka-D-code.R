@@ -57,40 +57,22 @@ data <- join_sentiment(data, "four_words", sentiment_list)
 # Export the cleaned four words sentiment data as csv
 write_csv(data, "cleaned_sentiment_data.csv")
 
-# Apply join_sentiment for majority and instructor
-data <- join_sentiment(data, "majority", sentiment_list)
-data <- join_sentiment(data, "instructor", sentiment_list)
+# Read the saved cleaned sentiment data csv, and select the variables to be used
+wordcloud_data <- read_csv("cleaned_sentiment_data.csv") %>% 
+  select(four_words, frequency, four_words_sentiment)
 
-# Reorder columns
-data <- data %>%
-  select(id, four_words, four_words_sentiment, frequency, majority, majority_sentiment, instructor, instructor_sentiment) %>%
-  arrange(desc(frequency))
-
-#################################################################################
-# Read the saved cleaned sentiment data csv
-four_words_data <- read_csv("cleaned_sentiment_data.csv")
-
-# Apply logarithmic transformation to frequencies
-wordcloud_data <- four_words_data %>% 
-  mutate(log_freq = log1p(frequency))
-
-# Select the necessary columns for the word cloud
-wordcloud_data <- wordcloud_data %>% 
-  select(four_words, log_freq, four_words_sentiment)
-
-#################################################################################
 
 # ggplot version of the word cloud with different colours for negative/positive
 
-ggplot(wordcloud_data, aes(label = four_words, size = log_freq, color = four_words_sentiment,
+ggplot(wordcloud_data, aes(label = four_words, size = frequency, color = four_words_sentiment,
                            fontface = "bold")) +
   geom_text_wordcloud(shape = "square", show.legend = TRUE) +
-  scale_size_area(max_size = 30)+
+  scale_size_area(max_size = 60)+
   scale_color_manual(values = c("positive" = "chartreuse2", "negative" = "red"),
                      labels = c("positive", "Negative"), 
                      name = "Sentiment Among Students") +
   labs(title = "Sentiment Word Cloud",
-       subtitle = "A proportional visualization of respondents sentiment about the Stats 399 course, based on four descriptive words",
+       subtitle = "A visualisation of the sentiment of respondents to four-word phrases ",
        caption = "Data source: Stats399 Students") +
   theme(
     panel.background = element_rect(fill = 'aliceblue'),
